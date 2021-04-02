@@ -13,6 +13,12 @@ public class Sign_up_activity extends MainActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.signup_page);
+        try
+        {
+            this.getSupportActionBar().hide();
+        }
+        catch (NullPointerException e){}
+
         button = (Button) findViewById(R.id.sign_up_signup_button);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
