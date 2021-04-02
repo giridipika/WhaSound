@@ -1,6 +1,8 @@
 # TeamLone Cats 
 * Animal Sound recognizing application 
 * Developers: 
+
+
 | Name              	| Role      	|
 |-------------------	|-----------	|
 | Dipika Giri       	| Developer 	|
