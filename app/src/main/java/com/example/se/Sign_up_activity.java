@@ -11,7 +11,9 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class Sign_up_activity extends MainActivity {
     Button button;
-    // This starts the firebase auth
+
+
+    // This starts firebase
     private FirebaseAuth user_signup;
 
     @Override
