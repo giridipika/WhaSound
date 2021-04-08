@@ -103,7 +103,7 @@ public class Login_page extends AppCompatActivity {
 
     // To navigate to the Signup page
     public void openSignUpPage(){
-        Intent intent = new Intent(this, Sign_up_activity.class);
+        Intent intent = new Intent(this, Sign_up_page.class);
         startActivity(intent);
     }
 }

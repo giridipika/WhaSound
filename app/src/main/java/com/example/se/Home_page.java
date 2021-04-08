@@ -1,10 +1,9 @@
 package com.example.se;
 
 import android.os.Bundle;
-import androidx.appcompat.app.AppCompatActivity;
 
 
-public class Home_page extends Sign_up_activity {
+public class Home_page extends Sign_up_page {
     // Sign_up activity extends MainActivity this should be resolved
 
     // Disables back button on Home page; this means that the user cannot go to login page or sign up page

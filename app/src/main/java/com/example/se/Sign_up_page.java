@@ -9,8 +9,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-public class Sign_up_activity extends Login_page {
-    Button button;
+public class Sign_up_page extends Login_page {
+    private Button cancel_sign_up;
+    private Button sign_up_button;
     // Firebase database and user_signup information
     private DatabaseReference user_information;
     private FirebaseAuth user_signup;
@@ -27,17 +28,25 @@ public class Sign_up_activity extends Login_page {
         }
         catch (NullPointerException e){}
 
-        button = (Button) findViewById(R.id.sign_up_signup_button);
-        button.setOnClickListener(new View.OnClickListener() {
+        cancel_sign_up = (Button) findViewById(R.id.cancel_sign_up);
+        cancel_sign_up.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openNewActivity();
+                openLoginPage();
+            }
+        });
+
+        sign_up_button = (Button) findViewById(R.id.sign_up_signup_button);
+        sign_up_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openLoginPage();
             }
         });
     }
 
     // Discussed in SRA; making use of the same feature as after sign up the user is navigated to the login screen
-    public void openNewActivity(){
+    public void openLoginPage(){
         Intent intent = new Intent(this, Login_page.class);
         startActivity(intent);
     }
