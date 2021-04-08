@@ -23,6 +23,8 @@ public class Sign_up_page extends Login_page {
     private DatabaseReference user_information;
     private FirebaseAuth user_signup;
     private EditText user_email, user_password, user_name, user_id_no, user_phone;
+    private String email,password, name,id,phone;
+    private Boolean check_condition; // Need to be implemented later
 
     public void createAccount(String email, String password){
         user_signup.createUserWithEmailAndPassword(email,password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -43,15 +45,13 @@ public class Sign_up_page extends Login_page {
         super.onCreate(savedInstanceState);
         user_information = FirebaseDatabase.getInstance().getReference();
         setContentView(R.layout.signup_page);
-
         try
         {
             this.getSupportActionBar().hide();
         }
         catch (NullPointerException e){}
 
-
-
+        // To allow the user to return to the login page; can also return back using the back button
         cancel_sign_up = (Button) findViewById(R.id.cancel_sign_up);
         cancel_sign_up.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -64,7 +64,31 @@ public class Sign_up_page extends Login_page {
         sign_up_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openLoginPage();
+                user_email = (EditText) findViewById(R.id.signup_email);
+                email = user_email.getText().toString();
+
+                user_password = (EditText) findViewById(R.id.signup_password);
+                password = user_password.getText().toString();
+
+                user_name = (EditText) findViewById(R.id.signup_name);
+                name = user_name.getText().toString();
+
+                user_id_no = (EditText) findViewById(R.id.signup_id_no);
+                id = user_id_no.getText().toString();
+
+                user_phone = (EditText) findViewById(R.id.signup_phone);
+                phone = user_phone.getText().toString();
+
+                check_condition = Boolean.TRUE;
+
+                if (check_condition){
+                    // Means all the data is working and all conditions are met
+
+                }
+                else{
+                    // To return back to the user
+                    openLoginPage();
+                }
             }
         });
     }

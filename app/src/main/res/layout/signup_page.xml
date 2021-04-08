@@ -77,8 +77,8 @@
 
             <Button
                 android:id="@+id/sign_up_signup_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="106dp"
+                android:layout_height="match_parent"
                 android:text="Sign Up" />
 
             <Space
