@@ -18,7 +18,7 @@ import com.google.firebase.auth.FirebaseUser;
 
 // Main Activity is the login screen
 
-public class MainActivity extends AppCompatActivity {
+public class Login_page extends AppCompatActivity {
     // This code opens new activity when Sign up is clicked
     Button sign_up_button;
     Button sign_in_button;
@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
         // Firebase is initialized
         user_login = FirebaseAuth.getInstance();
 
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.login_page);
 
         // Removes the title bar
         try
@@ -85,11 +85,11 @@ public class MainActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 // Login is successful; take the user ahead to the Home Page
                 if(task.isSuccessful()){
-                    Toast.makeText(MainActivity.this,"Welcome !",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Login_page.this,"Welcome !",Toast.LENGTH_SHORT).show();
                     openHomePage();
                 }
                 else{
-                    Toast.makeText(MainActivity.this,"Log in Failed.",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Login_page.this,"Log in Failed.",Toast.LENGTH_SHORT).show();
                 }
             }
         });
