@@ -32,8 +32,10 @@ public class Sign_up_activity extends MainActivity {
             }
         });
     }
+
+    // Discussed in SRA; making use of the same feature as after sign up the user is navigated to the login screen
     public void openNewActivity(){
-        Intent intent = new Intent(this, Home_page.class);
+        Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
 }
