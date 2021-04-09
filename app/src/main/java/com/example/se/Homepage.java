@@ -17,6 +17,12 @@ import com.example.se.ui.main.SectionsPagerAdapter;
 
 public class Homepage extends AppCompatActivity {
 
+    // Disables user from going back to login page
+    @Override
+    public void onBackPressed() {
+        // Do nothing
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
