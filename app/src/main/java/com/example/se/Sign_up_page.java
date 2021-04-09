@@ -36,10 +36,10 @@ public class Sign_up_page extends Login_page {
                 if (task.isSuccessful()){
                     check_condition = Boolean.TRUE;
                     Toast.makeText(Sign_up_page.this,"Sign up successful !",Toast.LENGTH_LONG).show();
+                    // To add the user on database
                     user_information = FirebaseDatabase.getInstance().getReference();
                     userDetails new_user = new userDetails(email,password,name,id,phone);
                     user_information.child("users").child(id).setValue(new_user);
-                    Toast.makeText(Sign_up_page.this,"User data created !",Toast.LENGTH_LONG).show();
                 }
                 else{
                     check_condition = Boolean.FALSE;
@@ -92,6 +92,8 @@ public class Sign_up_page extends Login_page {
 
 
                 createAccount(email,password,name,id,phone);
+                // After everything login page opened
+                openLoginPage();
             }
         });
     }
