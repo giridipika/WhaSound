@@ -1,0 +1,68 @@
+{
+  "project_info": {
+    "project_number": "438549008311",
+    "project_id": "animal-classification-46184",
+    "storage_bucket": "animal-classification-46184.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:438549008311:android:a850aef0c0c1700f77a232",
+        "android_client_info": {
+          "package_name": "com.example.animalclassification"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "438549008311-safin36ep61292mgmuoelsram1dv1mug.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBdpkUwfD85ssRrGZ_YdEAZNKYte6mqAv4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "438549008311-safin36ep61292mgmuoelsram1dv1mug.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:438549008311:android:638fc5a71b8265d777a232",
+        "android_client_info": {
+          "package_name": "com.example.se"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "438549008311-safin36ep61292mgmuoelsram1dv1mug.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBdpkUwfD85ssRrGZ_YdEAZNKYte6mqAv4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "438549008311-safin36ep61292mgmuoelsram1dv1mug.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
