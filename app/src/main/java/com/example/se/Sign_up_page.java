@@ -16,6 +16,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+// User has access to back button on this page
+
 public class Sign_up_page extends Login_page {
     private Button cancel_sign_up;
     private Button sign_up_button;
@@ -24,26 +26,29 @@ public class Sign_up_page extends Login_page {
     private FirebaseAuth user_signup;
     private EditText user_email, user_password, user_name, user_id_no, user_phone;
     private String email,password, name,id,phone;
-    private Boolean check_condition; // Need to be implemented later
+    private Boolean check_condition = Boolean.FALSE; // False by default
 
     public void createAccount(String email, String password){
         user_signup.createUserWithEmailAndPassword(email,password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()){
+                    check_condition = Boolean.TRUE;
                     Toast.makeText(Sign_up_page.this,"Sign up successful !",Toast.LENGTH_SHORT).show();
                 }
                 else{
+                    check_condition = Boolean.FALSE;
+                    // Will allow the user to retry will occur if account already exists
                     Toast.makeText(Sign_up_page.this,"Sign up failed !",Toast.LENGTH_SHORT).show();
                 }
             }
         });
     }
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        user_information = FirebaseDatabase.getInstance().getReference();
         setContentView(R.layout.signup_page);
         try
         {
@@ -79,16 +84,15 @@ public class Sign_up_page extends Login_page {
                 user_phone = (EditText) findViewById(R.id.signup_phone);
                 phone = user_phone.getText().toString();
 
-                check_condition = Boolean.TRUE;
+                createAccount(email,password);
+                if (check_condition) {
+                    // Account created
+                    // User id format : id_no (Unique value) Only connects to database after creating a user
+                    user_information = FirebaseDatabase.getInstance().getReference();
+                    userDetails new_user = new userDetails(email,password,name,id,phone);
+                    user_information.child("users").child(id).setValue(new_user);
 
-                if (check_condition){
-                    // Means all the data is working and all conditions are met
-
-                }
-                else{
-                    // To return back to the user
-                    openLoginPage();
-                }
+                } // Provides user option to not go back to the login page
             }
         });
     }
@@ -100,3 +104,15 @@ public class Sign_up_page extends Login_page {
     }
 }
 
+// For firebase creating an object
+class userDetails{
+    public String user_email, user_password, user_name, user_id_no, user_phone;
+    public userDetails(){}; // Default constructor
+    public  userDetails(String email,String password,String name,String id,String phone){
+        this.user_email = email;
+        this.user_password = password;
+        this.user_name = name;
+        this.user_id_no = id;
+        this.user_phone = phone;
+    }
+}
