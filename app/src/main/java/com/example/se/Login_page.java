@@ -97,7 +97,7 @@ public class Login_page extends AppCompatActivity {
 
     // This is to navigate to the homepage
     public void openHomePage(){
-        Intent intent = new Intent(this, Home_page.class);
+        Intent intent = new Intent(this, Homepage.class);
         startActivity(intent);
     }
 
