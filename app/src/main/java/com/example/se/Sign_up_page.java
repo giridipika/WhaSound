@@ -2,6 +2,7 @@ package com.example.se;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -28,18 +29,22 @@ public class Sign_up_page extends Login_page {
     private String email,password, name,id,phone;
     private Boolean check_condition = Boolean.FALSE; // False by default
 
-    public void createAccount(String email, String password){
+    public void createAccount(String email, String password, String name, String id,String phone){
         user_signup.createUserWithEmailAndPassword(email,password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()){
                     check_condition = Boolean.TRUE;
-                    Toast.makeText(Sign_up_page.this,"Sign up successful !",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Sign_up_page.this,"Sign up successful !",Toast.LENGTH_LONG).show();
+                    user_information = FirebaseDatabase.getInstance().getReference();
+                    userDetails new_user = new userDetails(email,password,name,id,phone);
+                    user_information.child("users").child(id).setValue(new_user);
+                    Toast.makeText(Sign_up_page.this,"User data created !",Toast.LENGTH_LONG).show();
                 }
                 else{
                     check_condition = Boolean.FALSE;
                     // Will allow the user to retry will occur if account already exists
-                    Toast.makeText(Sign_up_page.this,"Sign up failed !",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Sign_up_page.this,"Sign up failed !",Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -48,6 +53,7 @@ public class Sign_up_page extends Login_page {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        user_signup = FirebaseAuth.getInstance();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.signup_page);
         try
@@ -84,15 +90,8 @@ public class Sign_up_page extends Login_page {
                 user_phone = (EditText) findViewById(R.id.signup_phone);
                 phone = user_phone.getText().toString();
 
-                createAccount(email,password);
-                if (check_condition) {
-                    // Account created
-                    // User id format : id_no (Unique value) Only connects to database after creating a user
-                    user_information = FirebaseDatabase.getInstance().getReference();
-                    userDetails new_user = new userDetails(email,password,name,id,phone);
-                    user_information.child("users").child(id).setValue(new_user);
 
-                } // Provides user option to not go back to the login page
+                createAccount(email,password,name,id,phone);
             }
         });
     }
