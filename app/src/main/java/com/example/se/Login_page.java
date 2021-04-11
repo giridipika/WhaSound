@@ -2,7 +2,10 @@ package com.example.se;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -92,6 +95,11 @@ public class Login_page extends AppCompatActivity {
                 if(task.isSuccessful()){
                     Toast.makeText(Login_page.this,"Welcome !",Toast.LENGTH_SHORT).show();
                     // Saving user's email that will be user later to display on profile section; since login screen is the only way user can get into the homepage
+                    SharedPreferences sharedPref = getApplicationContext().getSharedPreferences(getString(R.string.file_name), Context.MODE_PRIVATE); // To open in private mode, can only be seen
+                    // by our application
+                    SharedPreferences.Editor editor = sharedPref.edit(); // Opening the file to edit
+                    editor.putString("Email",email); // Putting in the string, Now Email keyword in SharedPref is associated with email entered by the user
+                    editor.apply(); // Applying the changes
                     openHomePage();
                 }
                 else{

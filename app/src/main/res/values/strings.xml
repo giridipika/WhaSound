@@ -6,4 +6,5 @@
     <string name="tab_text_2">Summary</string>
     <string name="tab_text_3">History</string>
     <string name="tab_text_4">Profile</string>
+    <string name="file_name">ASR</string> <!--Means animal sound recognizer -->
 </resources>
