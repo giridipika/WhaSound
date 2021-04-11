@@ -103,7 +103,7 @@ public class Login_page extends AppCompatActivity {
                     openHomePage();
                 }
                 else{
-                    Toast.makeText(Login_page.this,"Log in Failed.",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Login_page.this,"Log in Failed. Try again.",Toast.LENGTH_SHORT).show();
                 }
             }
         });
