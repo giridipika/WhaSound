@@ -30,8 +30,8 @@ public class Profile extends Fragment {
         user_information = FirebaseDatabase.getInstance().getReference();
 
         // Recovering sharedPreferences email here
-        SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
-        String defaultValue = "Error";
+        SharedPreferences sharedPref = getActivity().getSharedPreferences(getString(R.string.file_name),Context.MODE_PRIVATE);
+        String defaultValue = "Random";
         String user_email = sharedPref.getString("Email",defaultValue); // Similar to map; email is the key and defaultValue is what it implies
         Log.i(user_email,user_email);
 
