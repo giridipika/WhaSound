@@ -15,8 +15,13 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 public class Profile extends Fragment {
     Button log_out;
@@ -26,15 +31,29 @@ public class Profile extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.profile,container,false);
-        user_login = FirebaseAuth.getInstance();
-        user_information = FirebaseDatabase.getInstance().getReference();
-
         // Recovering sharedPreferences email here
         SharedPreferences sharedPref = getActivity().getSharedPreferences(getString(R.string.file_name),Context.MODE_PRIVATE);
         String defaultValue = "Random";
         String user_email = sharedPref.getString("Email",defaultValue); // Similar to map; email is the key and defaultValue is what it implies
-        Log.i(user_email,user_email);
+        Log.i(user_email,user_email); // Logging the value of user_email
 
+        user_login = FirebaseAuth.getInstance();
+        user_information = FirebaseDatabase.getInstance().getReference();
+
+        Query user_details = user_information.child("users").orderByChild("user_email").equalTo(user_email).limitToFirst(1); // This limits the result obtained to One
+        user_details.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+        Log.i("Value", user_details.toString());
         log_out = (Button) view.findViewById(R.id.profile_logout); // Since our view is the inflated view, when findViewById is used android is confused which view to be used; so specifying
         // and view has findViewById
         log_out.setOnClickListener(new View.OnClickListener() {
