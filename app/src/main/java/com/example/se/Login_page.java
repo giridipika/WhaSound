@@ -57,7 +57,7 @@ public class Login_page extends AppCompatActivity {
                 try{
                     signIn(email,password);
                 } catch (Exception Easd){
-                    Toast.makeText(Login_page.this,"Log in Failed, try again! ",Toast.LENGTH_LONG).show();
+                    Toast.makeText(Login_page.this,"Log in Failed, try again!",Toast.LENGTH_LONG).show();
                     Log.i("Error at login","Error");
                 }
             }
