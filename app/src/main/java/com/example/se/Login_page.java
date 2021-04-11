@@ -91,6 +91,7 @@ public class Login_page extends AppCompatActivity {
                 // Login is successful; take the user ahead to the Home Page
                 if(task.isSuccessful()){
                     Toast.makeText(Login_page.this,"Welcome !",Toast.LENGTH_SHORT).show();
+                    // Saving user's email that will be user later to display on profile section; since login screen is the only way user can get into the homepage
                     openHomePage();
                 }
                 else{
