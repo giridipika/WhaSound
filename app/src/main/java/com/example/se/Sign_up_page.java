@@ -92,8 +92,6 @@ public class Sign_up_page extends Login_page {
                 user_phone = (EditText) findViewById(R.id.signup_phone);
                 phone = user_phone.getText().toString();
                 createAccount(email,password,name,id,phone);
-
-
             }
         });
     }
