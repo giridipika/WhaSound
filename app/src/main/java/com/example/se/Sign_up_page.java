@@ -89,13 +89,7 @@ public class Sign_up_page extends Login_page {
 
                 user_phone = (EditText) findViewById(R.id.signup_phone);
                 phone = user_phone.getText().toString();
-
-                try{
-                    createAccount(email,password,name,id,phone);
-                } catch (Exception Easd){
-                    Toast.makeText(Sign_up_page.this,"SignUp failed, try again! ",Toast.LENGTH_LONG).show();
-                    openLoginPage();
-                }
+                createAccount(email,password,name,id,phone);
                 // After everything login page opened
                 openLoginPage();
             }
