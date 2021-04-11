@@ -40,7 +40,7 @@ public class Sign_up_page extends Login_page {
                     user_information = FirebaseDatabase.getInstance().getReference();
                     userDetails new_user = new userDetails(email,password,name,id,phone);
                     // We will have access to email everywhere in  the app due to login screen.
-                    user_information.child("users").child(email).setValue(new_user);
+                    user_information.child("users").child(id).setValue(new_user);
                     // After everything login page opened; verifies sign in otherwise display toast
                     openLoginPage();
                 }
