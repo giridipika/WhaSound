@@ -93,8 +93,6 @@ public class Sign_up_page extends Login_page {
                 phone = user_phone.getText().toString();
                 createAccount(email,password,name,id,phone);
 
-                // If here means signup failed
-                Toast.makeText(Sign_up_page.this,"Sign up failed, try again !",Toast.LENGTH_SHORT).show();
 
             }
         });
