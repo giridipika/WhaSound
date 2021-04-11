@@ -40,6 +40,8 @@ public class Sign_up_page extends Login_page {
                     user_information = FirebaseDatabase.getInstance().getReference();
                     userDetails new_user = new userDetails(email,password,name,id,phone);
                     user_information.child("users").child(id).setValue(new_user);
+                    // After everything login page opened; verifies sign in otherwise display toast
+                    openLoginPage();
                 }
                 else{
                     check_condition = Boolean.FALSE;
@@ -90,8 +92,10 @@ public class Sign_up_page extends Login_page {
                 user_phone = (EditText) findViewById(R.id.signup_phone);
                 phone = user_phone.getText().toString();
                 createAccount(email,password,name,id,phone);
-                // After everything login page opened
-                openLoginPage();
+
+                // If here means signup failed
+                Toast.makeText(Sign_up_page.this,"Sign up failed, try again !",Toast.LENGTH_SHORT).show();
+
             }
         });
     }
