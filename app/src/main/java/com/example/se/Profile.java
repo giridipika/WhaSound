@@ -32,7 +32,7 @@ public class Profile extends Fragment {
         // Recovering sharedPreferences email here
         SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
         String defaultValue = "Error";
-        String user_email = sharedPref.getString("ASR",defaultValue);
+        String user_email = sharedPref.getString("Email",defaultValue); // Similar to map; email is the key and defaultValue is what it implies
         Log.i(user_email,user_email);
 
         log_out = (Button) view.findViewById(R.id.profile_logout); // Since our view is the inflated view, when findViewById is used android is confused which view to be used; so specifying
