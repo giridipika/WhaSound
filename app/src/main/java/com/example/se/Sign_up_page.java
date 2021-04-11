@@ -39,7 +39,8 @@ public class Sign_up_page extends Login_page {
                     // To add the user on database
                     user_information = FirebaseDatabase.getInstance().getReference();
                     userDetails new_user = new userDetails(email,password,name,id,phone);
-                    user_information.child("users").child(id).setValue(new_user);
+                    // Makes it easier to retrieve value from the database; also makes it simple as authentication does not allow multiple emails
+                    user_information.child("users").child(email).setValue(new_user);
                 }
                 else{
                     check_condition = Boolean.FALSE;
