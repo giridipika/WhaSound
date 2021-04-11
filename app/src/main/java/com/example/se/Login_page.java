@@ -56,7 +56,6 @@ public class Login_page extends AppCompatActivity {
                 email = user_email.getText().toString();
                 password = user_password.getText().toString();
 
-                Log.i(email,password);
                 try{
                     signIn(email,password);
                 } catch (Exception Easd){

@@ -1,7 +1,10 @@
 package com.example.se;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +28,13 @@ public class Profile extends Fragment {
         View view = inflater.inflate(R.layout.profile,container,false);
         user_login = FirebaseAuth.getInstance();
         user_information = FirebaseDatabase.getInstance().getReference();
+
+        // Recovering sharedPreferences email here
+        SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
+        String defaultValue = "Error";
+        String user_email = sharedPref.getString("ASR",defaultValue);
+        Log.i(user_email,user_email);
+
         log_out = (Button) view.findViewById(R.id.profile_logout); // Since our view is the inflated view, when findViewById is used android is confused which view to be used; so specifying
         // and view has findViewById
         log_out.setOnClickListener(new View.OnClickListener() {
