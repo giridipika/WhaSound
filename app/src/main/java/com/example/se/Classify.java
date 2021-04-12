@@ -51,6 +51,7 @@ public class Classify extends Fragment {
                 if (resultCode == -1) {
                     fileUri = data.getData();
                     filePath = fileUri.getPath();
+                    System.out.println("The selected file path is :"+filePath);
                 }
                 break;
         }
