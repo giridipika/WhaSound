@@ -7,10 +7,10 @@
     android:layout_height="match_parent">
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/classify_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Upload files here. "
+        android:text="Select files. "
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
