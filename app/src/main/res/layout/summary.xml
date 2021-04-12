@@ -33,11 +33,13 @@
                 android:id="@+id/summary_multiline"
                 android:layout_width="292dp"
                 android:layout_height="558dp"
-                android:text="MultiAutoCompleteTextView"
+                android:text="Multi Line"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.529"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/summary_title" />
+                app:layout_constraintTop_toBottomOf="@+id/summary_title"
+                app:layout_constraintVertical_bias="0.505" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </LinearLayout>

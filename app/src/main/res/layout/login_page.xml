@@ -27,7 +27,7 @@
             android:orientation="vertical">
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
+                android:layout_width="337dp"
                 android:layout_height="match_parent">
 
                 <EditText

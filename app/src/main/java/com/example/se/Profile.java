@@ -40,11 +40,13 @@ public class Profile extends Fragment {
         user_login = FirebaseAuth.getInstance();
         user_information = FirebaseDatabase.getInstance().getReference();
 
-        Query user_details = user_information.child("users").orderByChild("user_email").equalTo(user_email).limitToFirst(1); // This limits the result obtained to One
+        Query user_details = user_information.child("users").orderByChild("user_email").equalTo(user_email).limitToFirst(1); // child means we have users branch; we then order by user_email and then
+        // Compare to our user_email stored previously and pick the only first; the next add value listener is to display the value
         user_details.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-
+                // Since we have only one value we don't iterate through the list and sign_up_page has similar class
+                userDetails info = snapshot.getValue(userDetails.class);
             }
 
             @Override
@@ -70,3 +72,4 @@ public class Profile extends Fragment {
         startActivity(intent);
     }
 }
+
