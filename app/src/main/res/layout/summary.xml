@@ -33,7 +33,7 @@
                 android:id="@+id/summary_multiline"
                 android:layout_width="292dp"
                 android:layout_height="558dp"
-                android:text="Multi Line"
+                android:text="Change this text; as this is the description fo our. We can add images/photos and other details on this page and this section can be made longer. This is just a filler text, so it is better if you stop reading. Stop please Stop reading. :)))))"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.529"
