@@ -31,6 +31,7 @@ public class Classify extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         classify_view = inflater.inflate(R.layout.classify,container,false);
         choose_file_button = (Button) classify_view.findViewById(R.id.classify_button);
+
         choose_file_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -39,6 +40,9 @@ public class Classify extends Fragment {
                 chooseFile = Intent.createChooser(chooseFile, "Choose a file");
                 startActivityForResult(chooseFile, PICKFILE_RESULT_CODE);
                 // File path working.
+                /*
+                    For pie chart we can have : https://github.com/PhilJay/MPAndroidChart
+                 * */
             }
         });
         return classify_view;
