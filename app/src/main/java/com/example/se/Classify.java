@@ -20,13 +20,47 @@ import androidx.fragment.app.Fragment;
 import java.net.URISyntaxException;
 
 public class Classify extends Fragment {
+    private Button choose_file_button;
+    public static final int PICKFILE_RESULT_CODE = 1;
+    private Uri fileUri;
+    private String filePath; // This is the final file path
+    View classify_view;
+
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        classify_view = inflater.inflate(R.layout.classify,container,false);
+        choose_file_button = (Button) classify_view.findViewById(R.id.classify_button);
+        choose_file_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent chooseFile = new Intent(Intent.ACTION_GET_CONTENT);
+                chooseFile.setType("*/*");
+                chooseFile = Intent.createChooser(chooseFile, "Choose a file");
+                startActivityForResult(chooseFile, PICKFILE_RESULT_CODE);
+            }
+        });
+        return classify_view;
+    }
+    // This gets the file path
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+            case PICKFILE_RESULT_CODE:
+                if (resultCode == -1) {
+                    fileUri = data.getData();
+                    filePath = fileUri.getPath();
+                }
+                break;
+        }
+    }
+}
+
+// Legacy code
+//
 //    private static final int RESULT_OK = 1; // 1 means true
 //    private static final String TAG = "File path";
-    private Button choose_file_button;
 //    private static final int FILE_SELECT_CODE = 0;
-    View classify_view;
-    // Will implement later from : https://github.com/iPaulPro/aFileChooser
-//
 //    private void showFileChooser() {
 //
 //        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
@@ -87,18 +121,3 @@ public class Classify extends Fragment {
 //
 //        return null;
 //    }
-
-    @Nullable
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        classify_view = inflater.inflate(R.layout.classify,container,false);
-        choose_file_button = (Button) classify_view.findViewById(R.id.classify_button);
-        choose_file_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
-        return classify_view;
-    }
-}
