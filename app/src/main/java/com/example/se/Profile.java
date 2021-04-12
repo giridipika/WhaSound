@@ -23,6 +23,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.Iterator;
 import java.util.Map;
 
 public class Profile extends Fragment {
@@ -50,6 +51,16 @@ public class Profile extends Fragment {
                 // Since we have only one value we don't iterate through the list and sign_up_page has similar class
                 Map<String, Object> map = (Map<String, Object>) snapshot.getValue();
                 Log.d("Tag","Value is "+ map);
+                // To iterate through the map
+                // n^2 sorry !! - but will run on 1 time - should work flawlessly
+                Iterator hmIterator = map.entrySet().iterator();
+                while (hmIterator.hasNext()){
+                    Map.Entry mapElement = (Map.Entry) hmIterator.next();
+                    System.out.println(mapElement.getKey() + " : " + mapElement.getValue());
+                    System.out.println(" Value " + mapElement.getValue());
+                    Map <String,String> database_val = (Map<String,String>) mapElement.getValue();
+                    System.out.println(" Value of email:" + database_val.get("user_name"));
+                }
             }
 
             @Override
