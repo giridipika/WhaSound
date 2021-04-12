@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -30,6 +31,9 @@ public class Profile extends Fragment {
     Button log_out;
     private FirebaseAuth user_login;
     private DatabaseReference user_information;
+    private String user_stored_email, user_stored_id, user_stored_phone, user_stored_name;
+    private TextView pro_name, pro_email, pro_id, pro_phone; // pro means profile
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -56,10 +60,12 @@ public class Profile extends Fragment {
                 Iterator hmIterator = map.entrySet().iterator();
                 while (hmIterator.hasNext()){
                     Map.Entry mapElement = (Map.Entry) hmIterator.next();
-                    System.out.println(mapElement.getKey() + " : " + mapElement.getValue());
-                    System.out.println(" Value " + mapElement.getValue());
                     Map <String,String> database_val = (Map<String,String>) mapElement.getValue();
-                    System.out.println(" Value of email:" + database_val.get("user_name"));
+                    // Change values depending upon the need
+                    user_stored_name = database_val.get("user_name");
+                    user_stored_email =  database_val.get("user_email");
+                    user_stored_id = database_val.get("user_id_no");
+                    user_stored_phone = database_val.get("user_phone");
                 }
             }
 
@@ -69,7 +75,16 @@ public class Profile extends Fragment {
             }
         });
 
-        Log.i("Value", user_details.toString());
+        pro_name = (TextView) view.findViewById(R.id.profile_name);
+        pro_email = (TextView) view.findViewById(R.id.profile_email);
+        pro_id = (TextView) view.findViewById(R.id.profile_id);
+        pro_phone = (TextView) view.findViewById(R.id.profile_phone);
+        // Setting the text in the view
+        pro_name.setText(user_stored_name);
+        pro_email.setText(user_stored_email);
+        pro_id.setText(user_stored_id);
+        pro_phone.setText(user_stored_phone);
+
         log_out = (Button) view.findViewById(R.id.profile_logout); // Since our view is the inflated view, when findViewById is used android is confused which view to be used; so specifying
         // and view has findViewById
         log_out.setOnClickListener(new View.OnClickListener() {
