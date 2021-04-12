@@ -38,6 +38,7 @@ public class Classify extends Fragment {
                 chooseFile.setType("*/*");
                 chooseFile = Intent.createChooser(chooseFile, "Choose a file");
                 startActivityForResult(chooseFile, PICKFILE_RESULT_CODE);
+                // File path working.
             }
         });
         return classify_view;
