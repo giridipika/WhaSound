@@ -31,7 +31,7 @@ public class Profile extends Fragment {
     Button log_out;
     private FirebaseAuth user_login;
     private DatabaseReference user_information;
-    private String user_stored_email, user_stored_id, user_stored_phone, user_stored_name;
+    private String user_stored_email= "Null", user_stored_id= "Null", user_stored_phone = "Null", user_stored_name = "Null";
     private TextView pro_name, pro_email, pro_id, pro_phone; // pro means profile
 
     @Nullable
@@ -54,7 +54,6 @@ public class Profile extends Fragment {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 // Since we have only one value we don't iterate through the list and sign_up_page has similar class
                 Map<String, Object> map = (Map<String, Object>) snapshot.getValue();
-                Log.d("Tag","Value is "+ map);
                 // To iterate through the map
                 // n^2 sorry !! - but will run on 1 time - should work flawlessly
                 Iterator hmIterator = map.entrySet().iterator();
@@ -63,9 +62,21 @@ public class Profile extends Fragment {
                     Map <String,String> database_val = (Map<String,String>) mapElement.getValue();
                     // Change values depending upon the need
                     user_stored_name = database_val.get("user_name");
+                    System.out.println("value of name" + " "+ user_stored_name+"\n");
                     user_stored_email =  database_val.get("user_email");
                     user_stored_id = database_val.get("user_id_no");
                     user_stored_phone = database_val.get("user_phone");
+
+                    // Reloading the view after everything is pulled; if not default value defined in the layout.xml is applied
+                    pro_name = (TextView) view.findViewById(R.id.profile_name);
+                    pro_email = (TextView) view.findViewById(R.id.profile_email);
+                    pro_id = (TextView) view.findViewById(R.id.profile_id);
+                    pro_phone = (TextView) view.findViewById(R.id.profile_phone);
+                    // Setting the text in the view
+                    pro_name.setText(user_stored_name);
+                    pro_email.setText(user_stored_email);
+                    pro_id.setText(user_stored_id);
+                    pro_phone.setText(user_stored_phone);
                 }
             }
 
@@ -74,16 +85,6 @@ public class Profile extends Fragment {
 
             }
         });
-
-        pro_name = (TextView) view.findViewById(R.id.profile_name);
-        pro_email = (TextView) view.findViewById(R.id.profile_email);
-        pro_id = (TextView) view.findViewById(R.id.profile_id);
-        pro_phone = (TextView) view.findViewById(R.id.profile_phone);
-        // Setting the text in the view
-        pro_name.setText(user_stored_name);
-        pro_email.setText(user_stored_email);
-        pro_id.setText(user_stored_id);
-        pro_phone.setText(user_stored_phone);
 
         log_out = (Button) view.findViewById(R.id.profile_logout); // Since our view is the inflated view, when findViewById is used android is confused which view to be used; so specifying
         // and view has findViewById
