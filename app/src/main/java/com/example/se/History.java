@@ -13,6 +13,9 @@ public class History extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.history,container,false);
+        // Simply can make changes to the history_view to make use of on-create methods
+        View history_view = inflater.inflate(R.layout.history,container,false);
+
+        return history_view;
     }
 }
