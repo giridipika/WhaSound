@@ -23,6 +23,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.Map;
+
 public class Profile extends Fragment {
     Button log_out;
     private FirebaseAuth user_login;
@@ -34,19 +36,20 @@ public class Profile extends Fragment {
         // Recovering sharedPreferences email here
         SharedPreferences sharedPref = getActivity().getSharedPreferences(getString(R.string.file_name),Context.MODE_PRIVATE);
         String defaultValue = "Random";
-        String user_email = sharedPref.getString("Email",defaultValue); // Similar to map; email is the key and defaultValue is what it implies
-        Log.i(user_email,user_email); // Logging the value of user_email
+        String users_email = sharedPref.getString("Email",defaultValue); // Similar to map; email is the key and defaultValue is what it implies
+        Log.i(users_email,users_email); // Logging the value of user_email
 
         user_login = FirebaseAuth.getInstance();
         user_information = FirebaseDatabase.getInstance().getReference();
 
-        Query user_details = user_information.child("users").orderByChild("user_email").equalTo(user_email).limitToFirst(1); // child means we have users branch; we then order by user_email and then
+        Query user_details = user_information.child("users").orderByChild("user_email").equalTo(users_email); // child means we have users branch; we then order by user_email and then
         // Compare to our user_email stored previously and pick the only first; the next add value listener is to display the value
         user_details.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 // Since we have only one value we don't iterate through the list and sign_up_page has similar class
-                userDetails info = snapshot.getValue(userDetails.class);
+                Map<String, Object> map = (Map<String, Object>) snapshot.getValue();
+                Log.d("Tag","Value is "+ map);
             }
 
             @Override
