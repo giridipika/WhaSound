@@ -93,17 +93,6 @@ public class Classify extends Fragment {
     private Interpreter tfLite;
     private RecognizeCommands recognizeCommands = null;
 
-    // Basically opens the model file from Assets
-    private static MappedByteBuffer loadModelFile(AssetManager assets, String modelFilename)
-            throws IOException {
-        AssetFileDescriptor fileDescriptor = assets.openFd(modelFilename);
-        FileInputStream inputStream = new FileInputStream(fileDescriptor.getFileDescriptor());
-        FileChannel fileChannel = inputStream.getChannel();
-        long startOffset = fileDescriptor.getStartOffset();
-        long declaredLength = fileDescriptor.getDeclaredLength();
-        return fileChannel.map(FileChannel.MapMode.READ_ONLY, startOffset, declaredLength);
-    }
-
     // Other variables
     private Handler handler = new Handler();
     private HandlerThread backgroundThread;
@@ -154,12 +143,13 @@ public class Classify extends Fragment {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        System.out.println(actualModelFilename);
+        System.out.println("The actual modal filename is "+actualModelFilename);
 
         stop_classify.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 shouldContinue = false;
+                shouldContinueRecognition = false;
                 // This will stop if the threads are running
                 stopRecognition();
                 stopRecording();
@@ -171,11 +161,13 @@ public class Classify extends Fragment {
         choose_file_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // shouldContinue = true;
+                // shouldContinueRecognition = true;
                 // These start the various threads
                 // Start the recording and recognition threads.
                 requestMicrophonePermission();
-                startRecording();
-                //startRecognition();
+                // startRecording();
+                // startRecognition();
                 // This is to open file chooser, no longer needed
 //                Intent chooseFile = new Intent(Intent.ACTION_GET_CONTENT);
 //                chooseFile.setType("*/*");
@@ -224,6 +216,7 @@ public class Classify extends Fragment {
                 startRecognition(); // Starts the recognition
         }
     }
+
     // Starts Recording
     public synchronized void startRecording() {
         if (recordingThread != null) {
@@ -374,8 +367,8 @@ public class Classify extends Fragment {
 
             // Use the smoother to figure out if we've had a real recognition event.
             long currentTime = System.currentTimeMillis();
-//            final RecognizeCommands.RecognitionResult result =
-//                    recognizeCommands.processLatestResults(outputScores[0], currentTime);
+            final RecognizeCommands.RecognitionResult result =
+                    recognizeCommands.processLatestResults(outputScores[0], currentTime);
 //            lastProcessingTimeMs = new Date().getTime() - startTime;
 //            runOnUiThread(
 //                    new Runnable() {
@@ -532,6 +525,17 @@ public class Classify extends Fragment {
         } catch (InterruptedException e) {
             Log.e("amlan", "Interrupted when stopping background thread", e);
         }
+    }
+
+    // Basically opens the model file from Assets
+    private static MappedByteBuffer loadModelFile(AssetManager assets, String modelFilename)
+            throws IOException {
+        AssetFileDescriptor fileDescriptor = assets.openFd(modelFilename);
+        FileInputStream inputStream = new FileInputStream(fileDescriptor.getFileDescriptor());
+        FileChannel fileChannel = inputStream.getChannel();
+        long startOffset = fileDescriptor.getStartOffset();
+        long declaredLength = fileDescriptor.getDeclaredLength();
+        return fileChannel.map(FileChannel.MapMode.READ_ONLY, startOffset, declaredLength);
     }
 
     @Override
