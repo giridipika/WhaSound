@@ -29,9 +29,11 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.fragment.app.Fragment;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.URISyntaxException;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
@@ -61,6 +63,10 @@ public class Classify extends Fragment {
 
     // To request the audio
     private static final int REQUEST_RECORD_AUDIO = 13;
+    private static final long AVERAGE_WINDOW_DURATION_MS = 1000;
+    private static final float DETECTION_THRESHOLD = 0.50f;
+    private static final int SUPPRESSION_MS = 1500;
+    private static final int MINIMUM_COUNT = 3;
 
     // For recording
     short[] recordingBuffer = new short[RECORDING_LENGTH];
@@ -84,6 +90,7 @@ public class Classify extends Fragment {
     private final Interpreter.Options tfLiteOptions = new Interpreter.Options();
     private MappedByteBuffer tfLiteModel;
     private Interpreter tfLite;
+    private RecognizeCommands recognizeCommands = null;
 
     // Basically opens the model file from Assets
     private static MappedByteBuffer loadModelFile(AssetManager assets, String modelFilename)
@@ -108,6 +115,37 @@ public class Classify extends Fragment {
         classify_view = inflater.inflate(R.layout.classify,container,false);
         choose_file_button = (Button) classify_view.findViewById(R.id.classify_button);
 
+        // Reading the labels start here
+        String actualLabelFilename = LABEL_FILENAME.split("file:///android_asset/", -1)[1];
+        Log.i(LOG_TAG, "Reading labels from: " + actualLabelFilename);
+
+        // To read the labels.txt file
+        BufferedReader br = null;
+        try {
+            br = new BufferedReader(new InputStreamReader(classify_view.getContext().getAssets().open(actualLabelFilename)));
+            String line;
+            while ((line = br.readLine()) != null) {
+                labels.add(line);
+                if (line.charAt(0) != '_') {
+                    displayedLabels.add(line.substring(0, 1).toUpperCase() + line.substring(1));
+                }
+            }
+            br.close();
+        } catch (IOException e) {
+            throw new RuntimeException("Problem reading label file!", e);
+        }
+
+        // The label file is now read under br
+        // Our app will be able to recognize the animal sounds now
+        recognizeCommands =
+                new RecognizeCommands(
+                        labels,
+                        AVERAGE_WINDOW_DURATION_MS,
+                        DETECTION_THRESHOLD,
+                        SUPPRESSION_MS,
+                        MINIMUM_COUNT,
+                        MINIMUM_TIME_BETWEEN_SAMPLES_MS);
+
         choose_file_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -123,6 +161,7 @@ public class Classify extends Fragment {
         });
         return classify_view;
     }
+
     // This gets the file path
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -144,6 +183,7 @@ public class Classify extends Fragment {
                     new String[] {android.Manifest.permission.RECORD_AUDIO}, REQUEST_RECORD_AUDIO);
         }
     }
+
     // On permission is granted
     @Override
     public void onRequestPermissionsResult(
