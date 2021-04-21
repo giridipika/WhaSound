@@ -163,6 +163,8 @@ public class Classify extends Fragment {
                 // This will stop if the threads are running
                 stopRecognition();
                 stopRecording();
+                // Need to fix toast later
+                Toast.makeText(getActivity().getApplicationContext(),"Recording stopped.",Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -184,8 +186,6 @@ public class Classify extends Fragment {
 //                    For pie chart we can have : https://github.com/PhilJay/MPAndroidChart
 //                **/
             }
-
-
 
         });
         return classify_view;
