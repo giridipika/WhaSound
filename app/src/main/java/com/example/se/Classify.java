@@ -121,7 +121,7 @@ public class Classify extends Fragment {
         // To read the labels.txt file
         BufferedReader br = null;
         try {
-            br = new BufferedReader(new InputStreamReader(classify_view.getContext().getAssets().open(actualLabelFilename)));
+            br = new BufferedReader(new InputStreamReader(getContext().getAssets().open(actualLabelFilename)));
             String line;
             while ((line = br.readLine()) != null) {
                 labels.add(line);
@@ -133,7 +133,7 @@ public class Classify extends Fragment {
         } catch (IOException e) {
             throw new RuntimeException("Problem reading label file!", e);
         }
-
+        System.out.println(br);
         // The label file is now read under br
         // Our app will be able to recognize the animal sounds now
         recognizeCommands =
@@ -148,12 +148,11 @@ public class Classify extends Fragment {
         // The actual Model File-name is not tfLiteModel
         String actualModelFilename = MODEL_FILENAME.split("file:///android_asset/", -1)[1];
         try {
-            tfLiteModel = loadModelFile(classify_view.getContext().getAssets(), actualModelFilename);
-            recreateInterpreter();
+            tfLiteModel = loadModelFile(getContext().getAssets(), actualModelFilename);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-
+        System.out.println(actualModelFilename);
 
         choose_file_button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -161,9 +160,8 @@ public class Classify extends Fragment {
                 // These start the various threads
                 // Start the recording and recognition threads.
                 requestMicrophonePermission();
-                startRecording();
-                startRecognition();
-
+                //startRecording();
+                //startRecognition();
                 // This is to open file chooser, no longer needed
 //                Intent chooseFile = new Intent(Intent.ACTION_GET_CONTENT);
 //                chooseFile.setType("*/*");
@@ -173,8 +171,6 @@ public class Classify extends Fragment {
 //                /*
 //                    For pie chart we can have : https://github.com/PhilJay/MPAndroidChart
 //                **/
-
-
             }
         });
         return classify_view;
@@ -525,6 +521,7 @@ public class Classify extends Fragment {
 
     @Override
     public void onResume() {
+        super.onResume();
         startBackgroundThread();
     }
 
