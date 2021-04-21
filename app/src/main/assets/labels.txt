@@ -1,0 +1,8 @@
+0 Background Noise
+1 cat
+2 cow
+3 dog
+4 elephant
+5 horse
+6 sheep
+7 tiger
