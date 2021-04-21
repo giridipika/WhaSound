@@ -107,7 +107,6 @@ public class Classify extends Fragment {
     private Handler handler = new Handler();
     private HandlerThread backgroundThread;
     private Handler backgroundHandler;
-    private SwitchCompat apiSwitchCompat;
 
     @Nullable
     @Override
@@ -146,17 +145,36 @@ public class Classify extends Fragment {
                         MINIMUM_COUNT,
                         MINIMUM_TIME_BETWEEN_SAMPLES_MS);
 
+        // The actual Model File-name is not tfLiteModel
+        String actualModelFilename = MODEL_FILENAME.split("file:///android_asset/", -1)[1];
+        try {
+            tfLiteModel = loadModelFile(classify_view.getContext().getAssets(), actualModelFilename);
+            recreateInterpreter();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+
         choose_file_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent chooseFile = new Intent(Intent.ACTION_GET_CONTENT);
-                chooseFile.setType("*/*");
-                chooseFile = Intent.createChooser(chooseFile, "Choose a file");
-                startActivityForResult(chooseFile, PICKFILE_RESULT_CODE);
-                // File path working.
-                /*
-                    For pie chart we can have : https://github.com/PhilJay/MPAndroidChart
-                **/
+                // These start the various threads
+                // Start the recording and recognition threads.
+                requestMicrophonePermission();
+                startRecording();
+                startRecognition();
+
+                // This is to open file chooser, no longer needed
+//                Intent chooseFile = new Intent(Intent.ACTION_GET_CONTENT);
+//                chooseFile.setType("*/*");
+//                chooseFile = Intent.createChooser(chooseFile, "Choose a file");
+//                startActivityForResult(chooseFile, PICKFILE_RESULT_CODE);
+//                // File path working.
+//                /*
+//                    For pie chart we can have : https://github.com/PhilJay/MPAndroidChart
+//                **/
+
+
             }
         });
         return classify_view;
@@ -459,16 +477,16 @@ public class Classify extends Fragment {
 //                });
 //    }
 
-    // This might be used later - will come back to this
-    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-        backgroundHandler.post(
-                () -> {
-                    tfLiteOptions.setUseNNAPI(isChecked);
-                    recreateInterpreter();
-                });
-        if (isChecked) apiSwitchCompat.setText("NNAPI");
-        else apiSwitchCompat.setText("TFLITE");
-    }
+//    // This might be used later - will come back to this
+//    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//        backgroundHandler.post(
+//                () -> {
+//                    tfLiteOptions.setUseNNAPI(isChecked);
+//                    recreateInterpreter();
+//                });
+//        if (isChecked) apiSwitchCompat.setText("NNAPI");
+//        else apiSwitchCompat.setText("TFLITE");
+//    }
 
     // This recreates the interpreter
     private void recreateInterpreter() {
@@ -507,8 +525,6 @@ public class Classify extends Fragment {
 
     @Override
     public void onResume() {
-        super.onResume();
-
         startBackgroundThread();
     }
 
