@@ -177,11 +177,13 @@ public class Classify extends Fragment {
 //                /*
 //                    For pie chart we can have : https://github.com/PhilJay/MPAndroidChart
 //                **/
+//                  }
             }
 
         });
         return classify_view;
-    }
+}
+    
 
     // This gets the file path
     @Override
@@ -322,6 +324,7 @@ public class Classify extends Fragment {
         shouldContinueRecognition = false;
         recognitionThread = null;
     }
+
     // This method is used by start recognition
     private void recognize() {
         Log.v(LOG_TAG, "Start recognition");
@@ -369,80 +372,6 @@ public class Classify extends Fragment {
             long currentTime = System.currentTimeMillis();
             final RecognizeCommands.RecognitionResult result =
                     recognizeCommands.processLatestResults(outputScores[0], currentTime);
-//            lastProcessingTimeMs = new Date().getTime() - startTime;
-//            runOnUiThread(
-//                    new Runnable() {
-//                        @Override
-//                        public void run() {
-//
-//                            inferenceTimeTextView.setText(lastProcessingTimeMs + " ms");
-//
-//                            // If we do have a new command, highlight the right list entry.
-//                            if (!result.foundCommand.startsWith("_") && result.isNewCommand) {
-//                                int labelIndex = -1;
-//                                for (int i = 0; i < labels.size(); ++i) {
-//                                    if (labels.get(i).equals(result.foundCommand)) {
-//                                        labelIndex = i;
-//                                    }
-//                                }
-//
-//                                switch (labelIndex - 2) {
-//                                    case 0:
-//                                        selectedTextView = yesTextView;
-//                                        break;
-//                                    case 1:
-//                                        selectedTextView = noTextView;
-//                                        break;
-//                                    case 2:
-//                                        selectedTextView = upTextView;
-//                                        break;
-//                                    case 3:
-//                                        selectedTextView = downTextView;
-//                                        break;
-//                                    case 4:
-//                                        selectedTextView = leftTextView;
-//                                        break;
-//                                    case 5:
-//                                        selectedTextView = rightTextView;
-//                                        break;
-//                                    case 6:
-//                                        selectedTextView = onTextView;
-//                                        break;
-//                                    case 7:
-//                                        selectedTextView = offTextView;
-//                                        break;
-//                                    case 8:
-//                                        selectedTextView = stopTextView;
-//                                        break;
-//                                    case 9:
-//                                        selectedTextView = goTextView;
-//                                        break;
-//                                }
-//
-//                                if (selectedTextView != null) {
-//                                    selectedTextView.setBackgroundResource(R.drawable.round_corner_text_bg_selected);
-//                                    final String score = Math.round(result.score * 100) + "%";
-//                                    selectedTextView.setText(selectedTextView.getText() + "\n" + score);
-//                                    selectedTextView.setTextColor(
-//                                            getResources().getColor(android.R.color.holo_orange_light));
-//                                    handler.postDelayed(
-//                                            new Runnable() {
-//                                                @Override
-//                                                public void run() {
-//                                                    String origionalString =
-//                                                            selectedTextView.getText().toString().replace(score, "").trim();
-//                                                    selectedTextView.setText(origionalString);
-//                                                    selectedTextView.setBackgroundResource(
-//                                                            R.drawable.round_corner_text_bg_unselected);
-//                                                    selectedTextView.setTextColor(
-//                                                            getResources().getColor(android.R.color.darker_gray));
-//                                                }
-//                                            },
-//                                            750);
-//                                }
-//                            }
-//                        }
-//                    });
             try {
                 // We don't need to run too frequently, so snooze for a bit.
                 Thread.sleep(MINIMUM_TIME_BETWEEN_SAMPLES_MS);
@@ -453,44 +382,6 @@ public class Classify extends Fragment {
 
         Log.v(LOG_TAG, "End recognition");
     }
-
-    // This is to increase the number of threads we will set to a minimum possible
-//    @Override
-//    public void onClick(View v) {
-//        if ((v.getId() != R.id.plus) && (v.getId() != R.id.minus)) {
-//            return;
-//        }
-//
-//        String threads = threadsTextView.getText().toString().trim();
-//        int numThreads = Integer.parseInt(threads);
-//        if (v.getId() == R.id.plus) {
-//            numThreads++;
-//        } else {
-//            if (numThreads == 1) {
-//                return;
-//            }
-//            numThreads--;
-//        }
-//
-//        final int finalNumThreads = numThreads;
-//        threadsTextView.setText(String.valueOf(finalNumThreads));
-//        backgroundHandler.post(
-//                () -> {
-//                    tfLiteOptions.setNumThreads(finalNumThreads);
-//                    recreateInterpreter();
-//                });
-//    }
-
-//    // This might be used later - will come back to this
-//    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-//        backgroundHandler.post(
-//                () -> {
-//                    tfLiteOptions.setUseNNAPI(isChecked);
-//                    recreateInterpreter();
-//                });
-//        if (isChecked) apiSwitchCompat.setText("NNAPI");
-//        else apiSwitchCompat.setText("TFLITE");
-//    }
 
     // This recreates the interpreter
     private void recreateInterpreter() {
