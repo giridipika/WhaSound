@@ -46,6 +46,7 @@ import java.util.concurrent.locks.ReentrantLock;
 
 public class Classify extends Fragment {
     private Button choose_file_button;
+    private Button stop_classify;
     public static final int PICKFILE_RESULT_CODE = 1;
     private Uri fileUri;
     private String filePath; // This is the final file path
@@ -113,6 +114,7 @@ public class Classify extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         classify_view = inflater.inflate(R.layout.classify,container,false);
         choose_file_button = (Button) classify_view.findViewById(R.id.classify_button);
+        stop_classify = (Button) classify_view.findViewById(R.id.stop_classify);
 
         // Reading the labels start here
         String actualLabelFilename = LABEL_FILENAME.split("file:///android_asset/", -1)[1];
@@ -154,13 +156,23 @@ public class Classify extends Fragment {
         }
         System.out.println(actualModelFilename);
 
+        stop_classify.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                shouldContinue = false;
+                // This will stop if the threads are running
+                stopRecognition();
+                stopRecording();
+            }
+        });
+
         choose_file_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // These start the various threads
                 // Start the recording and recognition threads.
                 requestMicrophonePermission();
-                //startRecording();
+                startRecording();
                 //startRecognition();
                 // This is to open file chooser, no longer needed
 //                Intent chooseFile = new Intent(Intent.ACTION_GET_CONTENT);
@@ -172,6 +184,9 @@ public class Classify extends Fragment {
 //                    For pie chart we can have : https://github.com/PhilJay/MPAndroidChart
 //                **/
             }
+
+
+
         });
         return classify_view;
     }
