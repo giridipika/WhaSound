@@ -47,6 +47,7 @@ import java.util.concurrent.locks.ReentrantLock;
 public class Classify extends Fragment {
     private Button choose_file_button;
     private Button stop_classify;
+
     public static final int PICKFILE_RESULT_CODE = 1;
     private Uri fileUri;
     private String filePath; // This is the final file path
@@ -201,6 +202,7 @@ public class Classify extends Fragment {
 
     // This method requestsMicrophone Permission
     private void requestMicrophonePermission() {
+        System.out.println("Requests the microphone permission");
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             requestPermissions(
                     new String[] {android.Manifest.permission.RECORD_AUDIO}, REQUEST_RECORD_AUDIO);
