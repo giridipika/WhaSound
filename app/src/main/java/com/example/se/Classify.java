@@ -21,11 +21,15 @@ import androidx.fragment.app.Fragment;
 
 import org.tensorflow.lite.Interpreter;
 
+import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.URISyntaxException;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Classify extends Fragment {
     private Button choose_file_button;
@@ -38,7 +42,11 @@ public class Classify extends Fragment {
     // To load from asset folder
     private static final String LABEL_FILENAME = "file:///android_asset/conv_actions_labels.txt";
     private static final String MODEL_FILENAME = "file:///android_asset/conv_actions_frozen.tflite";
-    private static final String LOG_TAG = "Error";
+    private static final String LOG_TAG = "Log tagges is here";
+
+    // For label and modelfile
+    private List<String> labels = new ArrayList<String>();
+    private List<String> displayedLabels = new ArrayList<>();
 
     // For machine learning
     private final Interpreter.Options tfliteOptions = new Interpreter.Options();
@@ -54,6 +62,26 @@ public class Classify extends Fragment {
         // Both finds the classify and stop classify button
         choose_file_button = (Button) classify_view.findViewById(R.id.classify_button);
         stop_classify = (Button) classify_view.findViewById(R.id.stop_classify);
+
+        // For labels file
+        String actualLabelFilename = LABEL_FILENAME.split("file:///android_asset/",-1)[1];
+        Log.i(LOG_TAG,"Reading labels from " + actualLabelFilename);
+
+        BufferedReader br = null;
+        try{
+            br = new BufferedReader(new InputStreamReader(classify_view.getContext().getAssets().open(actualLabelFilename)));
+            String line;
+            while ((line = br.readLine()) != null){
+                labels.add(line);
+                if (line.charAt(0) != '_'){
+                    displayedLabels.add(line.substring(0,1).toUpperCase()+ line.substring(1));
+                }
+            }
+        } catch (IOException e){
+            throw new RuntimeException("Problem reading the label file!",e);
+        }
+
+        Log.i(LOG_TAG,"Labels file messages are :"+ displayedLabels);
 
         choose_file_button.setOnClickListener(new View.OnClickListener() {
             @Override
