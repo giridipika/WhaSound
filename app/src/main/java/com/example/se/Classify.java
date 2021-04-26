@@ -83,6 +83,19 @@ public class Classify extends Fragment {
 
         Log.i(LOG_TAG,"Labels file messages are :"+ displayedLabels);
 
+        // ToDo : Implement Recognize Commands if not working
+
+        // Opening the model file
+        String actualModelFilename = MODEL_FILENAME.split("file:///android_asset/",-1)[1];
+        try{
+            tfLiteModel = loadModelFile(classify_view.getContext().getAssets(), actualModelFilename);
+        } catch (Exception e){
+            throw new RuntimeException(e);
+        }
+
+        Log.i(LOG_TAG,"The modal file is :"+actualLabelFilename);
+        Log.i(LOG_TAG,"The actual content is :"+tfLiteModel);
+
         choose_file_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
