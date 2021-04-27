@@ -59,12 +59,13 @@ public class Classify extends Fragment {
     BufferedInputStream in;
     byte[] audioBytes;
 
+
     // For machine learning
     private final Interpreter.Options tfliteOptions = new Interpreter.Options();
     private MappedByteBuffer tfLiteModel;
     private Interpreter tfLite;
-    private Map<Object,Object> outputMap = new HashMap<>();
     private final Interpreter.Options ftliteOptions = new Interpreter.Options();
+    float[][] outputs;
     private RecognizeCommands recognizeCommands = null;
     // ToDo : Remove this if not needed
 
@@ -94,7 +95,7 @@ public class Classify extends Fragment {
         } catch (IOException e){
             throw new RuntimeException("Problem reading the label file!",e);
         }
-
+        outputs = new float[1][displayedLabels.size()];
         Log.i(LOG_TAG,"Labels file messages are :"+ displayedLabels);
 
         // ToDo : Implement Recognize Commands if not working
@@ -151,10 +152,9 @@ public class Classify extends Fragment {
                     open_audio_file(fileUri);
                     // Opens main audio file
                     try{
-                        outputMap.put(0,"outputScores");
                         // Todo : Remove another loadModelFile @Depreciated
-                        tfLite.run(audioBytes,outputMap);
-                        Log.i(LOG_TAG,"The output is :"+ outputMap);
+                        tfLite.run(audioBytes,outputs);
+                        Log.i(LOG_TAG,"The output is :"+ outputs);
                     }catch(Exception e){
                         throw new RuntimeException(e);
                     }
