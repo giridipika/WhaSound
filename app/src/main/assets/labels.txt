@@ -1,0 +1,5 @@
+0 Background Noise
+1 Cow
+2 Dog
+3 Hen
+4 Sheep

@@ -24,6 +24,7 @@ import org.tensorflow.lite.Interpreter;
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -32,7 +33,9 @@ import java.net.URISyntaxException;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Classify extends Fragment {
     private Button choose_file_button;
@@ -43,8 +46,8 @@ public class Classify extends Fragment {
     View classify_view;
 
     // To load from asset folder
-    private static final String LABEL_FILENAME = "file:///android_asset/conv_actions_labels.txt";
-    private static final String MODEL_FILENAME = "file:///android_asset/conv_actions_frozen.tflite";
+    private static final String LABEL_FILENAME = "file:///android_asset/labels.txt";
+    private static final String MODEL_FILENAME = "file:///android_asset/soundclassifier.tflite";
     private static final String LOG_TAG = "Log tagges is here";
 
     // For label and modelfile
@@ -60,6 +63,8 @@ public class Classify extends Fragment {
     private final Interpreter.Options tfliteOptions = new Interpreter.Options();
     private MappedByteBuffer tfLiteModel;
     private Interpreter tfLite;
+    private Map<Object,Object> outputMap = new HashMap<>();
+    private final Interpreter.Options ftliteOptions = new Interpreter.Options();
     private RecognizeCommands recognizeCommands = null;
     // ToDo : Remove this if not needed
 
@@ -105,7 +110,14 @@ public class Classify extends Fragment {
         Log.i(LOG_TAG,"The modal file is :"+actualLabelFilename);
         Log.i(LOG_TAG,"The actual content is :"+tfLiteModel);
 
-
+        // ToDo : Model file opened here
+        try{
+            ftliteOptions.setNumThreads(1);
+            tfLite = new Interpreter(tfLiteModel,ftliteOptions);
+        } catch (Exception e){
+            throw new RuntimeException(e);
+        }
+        Log.i(LOG_TAG,"TF lite file loaded. ");
 
         choose_file_button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -114,7 +126,6 @@ public class Classify extends Fragment {
                 chooseFile.setType("*/*");
                 chooseFile = Intent.createChooser(chooseFile, "Choose a file");
                 startActivityForResult(chooseFile, PICKFILE_RESULT_CODE);
-
                 // At this point we have the path of the file
                 // File path working.
                 /*
@@ -135,6 +146,14 @@ public class Classify extends Fragment {
                     System.out.println("The selected file path is :"+filePath);
                     open_audio_file(fileUri);
                     // Opens main audio file
+                    try{
+                        outputMap.put(0,"outputScores");
+                        // Todo : Remove another loadModelFile @Depreciated
+                        tfLite.run(audioBytes,outputMap);
+                        Log.i(LOG_TAG,"The output is :"+ outputMap);
+                    }catch(Exception e){
+                        throw new RuntimeException(e);
+                    }
                 }
                 break;
         }
