@@ -21,9 +21,12 @@ import androidx.fragment.app.Fragment;
 
 import org.tensorflow.lite.Interpreter;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URISyntaxException;
 import java.nio.MappedByteBuffer;
@@ -48,11 +51,17 @@ public class Classify extends Fragment {
     private List<String> labels = new ArrayList<String>();
     private List<String> displayedLabels = new ArrayList<>();
 
+    // For the audio file
+    ByteArrayOutputStream out = new ByteArrayOutputStream();
+    BufferedInputStream in;
+    byte[] audioBytes;
+
     // For machine learning
     private final Interpreter.Options tfliteOptions = new Interpreter.Options();
     private MappedByteBuffer tfLiteModel;
     private Interpreter tfLite;
     private RecognizeCommands recognizeCommands = null;
+    // ToDo : Remove this if not needed
 
     @Nullable
     @Override
@@ -96,6 +105,8 @@ public class Classify extends Fragment {
         Log.i(LOG_TAG,"The modal file is :"+actualLabelFilename);
         Log.i(LOG_TAG,"The actual content is :"+tfLiteModel);
 
+
+
         choose_file_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -122,9 +133,28 @@ public class Classify extends Fragment {
                     fileUri = data.getData();
                     filePath = fileUri.getPath();
                     System.out.println("The selected file path is :"+filePath);
+                    open_audio_file(fileUri);
+                    // Opens main audio file
                 }
                 break;
         }
+    }
+
+    public void open_audio_file(Uri filePath){
+        try{
+            in = new BufferedInputStream(getContext().getContentResolver().openInputStream(filePath));
+            int read;
+            byte[] buff = new byte[1024];
+            while ((read = in.read(buff)) > 0)
+            {
+                out.write(buff, 0, read);
+            }
+            out.flush();
+        }catch(Exception e){
+            throw new RuntimeException(e);
+        }
+        audioBytes = out.toByteArray();
+        Log.i(LOG_TAG,"The audio file is " + audioBytes.toString());
     }
 
     // This method loads the TF lite file
