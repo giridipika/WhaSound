@@ -20,7 +20,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import org.tensorflow.lite.Interpreter;
-
+import org.tensorflow.lite.flex.FlexDelegate;
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
@@ -113,7 +113,11 @@ public class Classify extends Fragment {
         // ToDo : Model file opened here
         try{
             ftliteOptions.setNumThreads(1);
+            FlexDelegate flex = new FlexDelegate();
+            ftliteOptions.addDelegate(flex);
+            File openThis = new File(MODEL_FILENAME);
             tfLite = new Interpreter(tfLiteModel,ftliteOptions);
+            // tfLite = new Interpreter(openThis);
         } catch (Exception e){
             throw new RuntimeException(e);
         }
