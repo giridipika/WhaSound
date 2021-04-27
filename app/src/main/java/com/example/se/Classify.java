@@ -107,7 +107,7 @@ public class Classify extends Fragment {
             throw new RuntimeException(e);
         }
 
-        Log.i(LOG_TAG,"The modal file is :"+actualLabelFilename);
+        Log.i(LOG_TAG,"The modal file is :"+actualModelFilename);
         Log.i(LOG_TAG,"The actual content is :"+tfLiteModel);
 
         // ToDo : Model file opened here
