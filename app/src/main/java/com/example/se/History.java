@@ -12,7 +12,16 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.components.Description;
+
 public class History extends Fragment {
+    // Variables
+    private static String HISTORY_TAG = "History";
+    private float [] yData;
+    private String [] xData = {"Background Noise","Cow","Dog","Hen","Sheep"};
+    PieChart pieChart;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -22,7 +31,14 @@ public class History extends Fragment {
         String defaultValue = "Random";
         String ml_recognized_model = sharedPref.getString("FLOAT_ARR", defaultValue); // Similar to map; email is the key and defaultValue is what it implies
         float[] ml_recognized_val = getFloatArray(ml_recognized_model);
-
+        yData = ml_recognized_val; // Assigning the values
+        pieChart = (PieChart) history_view.findViewById(R.id.idPieChart);
+        Description d = new Description();
+        d.setText("Your latest Classification");
+        pieChart.setDescription(d);
+        pieChart.setHoleRadius(25f);
+        pieChart.setRotationEnabled(true);
+        pieChart.setDrawEntryLabels(true);
         return history_view;
     }
 
