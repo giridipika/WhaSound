@@ -188,6 +188,8 @@ public class Classify extends Fragment {
                         outputBuffer.rewind();
                         tfLite.run(inputBuffer,outputBuffer);
                         Log.i(LOG_TAG,"The output is :"+ Arrays.toString(outputBuffer.array()));
+                        inputBuffer.clear();
+                        outputBuffer.clear();
                     }catch(Exception e){
                         throw new RuntimeException(e);
                     }
