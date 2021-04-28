@@ -68,7 +68,6 @@ public class Classify extends Fragment {
     Float[][] audioFile = new Float[1][44032];
 
     // For machine learning
-    private final Interpreter.Options tfliteOptions = new Interpreter.Options();
     private MappedByteBuffer tfLiteModel;
     private Interpreter tfLite;
     private final Interpreter.Options ftliteOptions = new Interpreter.Options();
@@ -76,12 +75,7 @@ public class Classify extends Fragment {
     private RecognizeCommands recognizeCommands = null;
     private int modelInputLength;
     private int modelNumClasses;
-    private Float [] predictionProbs;
     private FloatBuffer inputBuffer;
-
-
-
-    // ToDo : Remove this if not needed
 
     @Nullable
     @Override
@@ -212,11 +206,11 @@ public class Classify extends Fragment {
         }catch(Exception e){
             throw new RuntimeException(e);
         }
+
         //Todo : Change the audio file to a float pointer
         audioBytes = out.toByteArray();
         for (int i = 0;i < audioBytes.length;i++){
             float val = (float) audioBytes[i];
-            Log.i(LOG_TAG," "+val);
             inputBuffer.put(i,val);
             audioFile[0][i] = val;
         }
