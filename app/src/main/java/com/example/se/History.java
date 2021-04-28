@@ -55,31 +55,31 @@ public class History extends Fragment {
 
         addDataSet();
 
-        pieChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
-            @Override
-            public void onValueSelected(Entry e, Highlight h) {
-                Log.d(TAG, "onValueSelected: Value select from chart.");
-                Log.d(TAG, "onValueSelected: " + e.toString());
-                Log.d(TAG, "onValueSelected: " + h.toString());
-
-                int pos1 = e.toString().indexOf("(sum): ");
-                String sales = e.toString().substring(pos1 + 7);
-
-                for(int i = 0; i < yData.length; i++){
-                    if(yData[i] == Float.parseFloat(sales)){
-                        pos1 = i;
-                        break;
-                    }
-                }
-                String employee = xData[pos1 + 1];
-                Toast.makeText(history_view.getContext(), "Employee " + employee + "\n" + "Sales: $" + sales + "K", Toast.LENGTH_LONG).show();
-            }
-
-            @Override
-            public void onNothingSelected() {
-
-            }
-        });
+//        pieChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
+//            @Override
+//            public void onValueSelected(Entry e, Highlight h) {
+//                Log.d(TAG, "onValueSelected: Value select from chart.");
+//                Log.d(TAG, "onValueSelected: " + e.toString());
+//                Log.d(TAG, "onValueSelected: " + h.toString());
+//
+//                int pos1 = e.toString().indexOf("(sum): ");
+//                String sales = e.toString().substring(pos1 + 7);
+//
+//                for(int i = 0; i < yData.length; i++){
+//                    if(yData[i] == Float.parseFloat(sales)){
+//                        pos1 = i;
+//                        break;
+//                    }
+//                }
+//                String employee = xData[pos1 + 1];
+//                Toast.makeText(history_view.getContext(), "Employee " + employee + "\n" + "Sales: $" + sales + "K", Toast.LENGTH_LONG).show();
+//            }
+//
+//            @Override
+//            public void onNothingSelected() {
+//
+//            }
+//        });
 
         return history_view;
     }
