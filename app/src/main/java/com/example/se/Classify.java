@@ -46,7 +46,6 @@ import java.util.Map;
 
 public class Classify extends Fragment {
     private Button choose_file_button;
-    private Button stop_classify;
     public static final int PICKFILE_RESULT_CODE = 1;
     private Uri fileUri;
     private String filePath; // This is the final file path
@@ -84,7 +83,6 @@ public class Classify extends Fragment {
 
         // Both finds the classify and stop classify button
         choose_file_button = (Button) classify_view.findViewById(R.id.classify_button);
-        stop_classify = (Button) classify_view.findViewById(R.id.stop_classify);
 
         // For labels file
         String actualLabelFilename = LABEL_FILENAME.split("file:///android_asset/",-1)[1];
