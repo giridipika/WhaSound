@@ -21,6 +21,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import org.tensorflow.lite.Interpreter;
 import org.tensorflow.lite.flex.FlexDelegate;
@@ -238,8 +239,6 @@ public class Classify extends Fragment {
     }
     // To open history page
     public void openHistoryPage(){
-        Intent intent = new Intent(getActivity(),History.class); // The same logic as above, is using
-        // Profile as an view and constructing that and getting the context
-        startActivity(intent);
+
     }
 }
