@@ -21,6 +21,9 @@ allprojects {
             name 'ossrh-snapshot'
             url 'http://oss.sonatype.org/content/repositories/snapshots'
         }
+        maven{
+            url 'https://jitpack.io'
+        }
     }
 }
 

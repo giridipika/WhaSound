@@ -18,9 +18,6 @@ public class History extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         // Simply can make changes to the history_view to make use of on-create methods
         View history_view = inflater.inflate(R.layout.history, container, false);
-        /*
-        For pie chart we can have : https://github.com/PhilJay/MPAndroidChart
-        * */
         SharedPreferences sharedPref = getActivity().getSharedPreferences(getString(R.string.ml_values), Context.MODE_PRIVATE);
         String defaultValue = "Random";
         String ml_recognized_model = sharedPref.getString("FLOAT_ARR", defaultValue); // Similar to map; email is the key and defaultValue is what it implies
@@ -28,6 +25,7 @@ public class History extends Fragment {
 
         return history_view;
     }
+
     // Coverts string to float []
     public float[] getFloatArray(String str) {
         if (str != null) {
