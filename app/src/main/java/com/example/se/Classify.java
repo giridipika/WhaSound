@@ -21,7 +21,13 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.viewpager.widget.ViewPager;
+
+import com.example.se.ui.main.SectionsPagerAdapter;
+import com.google.android.material.tabs.TabLayout;
 
 import org.tensorflow.lite.Interpreter;
 import org.tensorflow.lite.flex.FlexDelegate;
@@ -239,6 +245,7 @@ public class Classify extends Fragment {
     }
     // To open history page
     public void openHistoryPage(){
-
+        ViewPager viewPager = getActivity().findViewById(R.id.view_pager);
+        viewPager.setCurrentItem(2);
     }
 }
