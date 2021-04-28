@@ -193,6 +193,7 @@ public class Classify extends Fragment {
                         editor.apply(); // Applying the changes
                         inputBuffer.clear();
                         outputBuffer.clear();
+                        openHistoryPage(); // This opens history page after everything is done
                     }catch(Exception e){
                         throw new RuntimeException(e);
                     }
@@ -235,5 +236,10 @@ public class Classify extends Fragment {
         long declaredLength = fileDescriptor.getDeclaredLength();
         return fileChannel.map(FileChannel.MapMode.READ_ONLY,startOffset,declaredLength);
     }
-
+    // To open history page
+    public void openHistoryPage(){
+        Intent intent = new Intent(getActivity(),History.class); // The same logic as above, is using
+        // Profile as an view and constructing that and getting the context
+        startActivity(intent);
+    }
 }
