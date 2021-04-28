@@ -32,12 +32,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.Object;
+import java.lang.reflect.Array;
 import java.net.URISyntaxException;
 import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -63,9 +65,7 @@ public class Classify extends Fragment {
     ByteArrayOutputStream out = new ByteArrayOutputStream();
     InputStream in;
     byte[] audioBytes;
-    FloatBuffer audioInput;
-    FloatBuffer audioOutput;
-    Float [] predictionoutput;
+    Float[][] audioFile = new Float[1][44032];
 
     // For machine learning
     private final Interpreter.Options tfliteOptions = new Interpreter.Options();
@@ -74,8 +74,11 @@ public class Classify extends Fragment {
     private final Interpreter.Options ftliteOptions = new Interpreter.Options();
     float[] outputs;
     private RecognizeCommands recognizeCommands = null;
-    private int modelInputLenght;
+    private int modelInputLength;
     private int modelNumClasses;
+    private Float [] predictionProbs;
+    private FloatBuffer inputBuffer;
+
 
 
     // ToDo : Remove this if not needed
@@ -138,17 +141,19 @@ public class Classify extends Fragment {
 
         // To load the metadata and verify it
         int [] inputShape = tfLite.getInputTensor(0).shape();
-        modelNumClasses = inputShape[1];
+        modelInputLength = inputShape[1];
+
+        int [] outputShape  = tfLite.getOutputTensor(0).shape();
+        modelNumClasses = outputShape[1];
+
         Log.i(LOG_TAG," "+modelNumClasses);
         if (modelNumClasses != displayedLabels.size()){
             Log.e(LOG_TAG,"The file's metadata is not the same");
+        }else{
+            Log.i(LOG_TAG,"The file's metadata is same");
         }
         Log.i(LOG_TAG," "+displayedLabels.size());
-        // This is the prediction output
-        predictionoutput = new Float[modelNumClasses]; // This is not NnNN
-        audioOutput = FloatBuffer.allocate(displayedLabels.size());
-        // Allocating the same size to audio Input
-        //audioInput = FloatBuffer.allocate(modelInputLenght);
+        inputBuffer = FloatBuffer.allocate(modelInputLength);
 
         choose_file_button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -178,11 +183,11 @@ public class Classify extends Fragment {
                     open_audio_file(fileUri);
                     // Opens main audio file
                     try{
-                        // Todo : Remove another loadModelFile @Depreciated
-                        audioInput.rewind();
-                        audioOutput.rewind();
-                        tfLite.run(audioInput,audioOutput);
-                        Log.i(LOG_TAG,"The output is :"+ outputs);
+                        FloatBuffer outputBuffer = FloatBuffer.allocate(modelNumClasses);
+                        inputBuffer.rewind();
+                        outputBuffer.rewind();
+                        tfLite.run(inputBuffer,outputBuffer);
+                        Log.i(LOG_TAG,"The output is :"+ Arrays.toString(outputBuffer.array()));
                     }catch(Exception e){
                         throw new RuntimeException(e);
                     }
@@ -207,11 +212,11 @@ public class Classify extends Fragment {
         }
         //Todo : Change the audio file to a float pointer
         audioBytes = out.toByteArray();
-        audioInput = FloatBuffer.allocate(audioBytes.length);
         for (int i = 0;i < audioBytes.length;i++){
             float val = (float) audioBytes[i];
             Log.i(LOG_TAG," "+val);
-            audioInput.put(i,val);
+            inputBuffer.put(i,val);
+            audioFile[0][i] = val;
         }
     }
 
