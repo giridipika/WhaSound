@@ -5,7 +5,9 @@ import android.content.Intent;
 import android.content.res.AssetFileDescriptor;
 import android.content.res.AssetManager;
 import android.database.Cursor;
+import android.media.AudioManager;
 import android.net.Uri;
+import android.net.rtp.AudioStream;
 import android.os.Bundle;
 import android.os.FileUtils;
 import android.util.Log;
@@ -29,7 +31,10 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.lang.Object;
 import java.net.URISyntaxException;
+import java.nio.ByteBuffer;
+import java.nio.FloatBuffer;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 import java.util.ArrayList;
@@ -56,17 +61,23 @@ public class Classify extends Fragment {
 
     // For the audio file
     ByteArrayOutputStream out = new ByteArrayOutputStream();
-    BufferedInputStream in;
+    InputStream in;
     byte[] audioBytes;
-
+    FloatBuffer audioInput;
+    FloatBuffer audioOutput;
+    Float [] predictionoutput;
 
     // For machine learning
     private final Interpreter.Options tfliteOptions = new Interpreter.Options();
     private MappedByteBuffer tfLiteModel;
     private Interpreter tfLite;
     private final Interpreter.Options ftliteOptions = new Interpreter.Options();
-    float[][] outputs;
+    float[] outputs;
     private RecognizeCommands recognizeCommands = null;
+    private int modelInputLenght;
+    private int modelNumClasses;
+
+
     // ToDo : Remove this if not needed
 
     @Nullable
@@ -95,8 +106,9 @@ public class Classify extends Fragment {
         } catch (IOException e){
             throw new RuntimeException("Problem reading the label file!",e);
         }
-        outputs = new float[1][displayedLabels.size()];
+        // Creates the equal number of labels on the output file
         Log.i(LOG_TAG,"Labels file messages are :"+ displayedLabels);
+        outputs = new float[displayedLabels.size()];
 
         // ToDo : Implement Recognize Commands if not working
 
@@ -123,6 +135,20 @@ public class Classify extends Fragment {
             throw new RuntimeException(e);
         }
         Log.i(LOG_TAG,"TF lite file loaded. ");
+
+        // To load the metadata and verify it
+        int [] inputShape = tfLite.getInputTensor(0).shape();
+        modelNumClasses = inputShape[1];
+        Log.i(LOG_TAG," "+modelNumClasses);
+        if (modelNumClasses != displayedLabels.size()){
+            Log.e(LOG_TAG,"The file's metadata is not the same");
+        }
+        Log.i(LOG_TAG," "+displayedLabels.size());
+        // This is the prediction output
+        predictionoutput = new Float[modelNumClasses]; // This is not NnNN
+        audioOutput = FloatBuffer.allocate(displayedLabels.size());
+        // Allocating the same size to audio Input
+        //audioInput = FloatBuffer.allocate(modelInputLenght);
 
         choose_file_button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -153,7 +179,9 @@ public class Classify extends Fragment {
                     // Opens main audio file
                     try{
                         // Todo : Remove another loadModelFile @Depreciated
-                        tfLite.run(audioBytes,outputs);
+                        audioInput.rewind();
+                        audioOutput.rewind();
+                        tfLite.run(audioInput,audioOutput);
                         Log.i(LOG_TAG,"The output is :"+ outputs);
                     }catch(Exception e){
                         throw new RuntimeException(e);
@@ -166,6 +194,7 @@ public class Classify extends Fragment {
     public void open_audio_file(Uri filePath){
         try{
             in = new BufferedInputStream(getContext().getContentResolver().openInputStream(filePath));
+
             int read;
             byte[] buff = new byte[1024];
             while ((read = in.read(buff)) > 0)
@@ -176,8 +205,14 @@ public class Classify extends Fragment {
         }catch(Exception e){
             throw new RuntimeException(e);
         }
+        //Todo : Change the audio file to a float pointer
         audioBytes = out.toByteArray();
-        Log.i(LOG_TAG,"The audio file is " + audioBytes.toString());
+        audioInput = FloatBuffer.allocate(audioBytes.length);
+        for (int i = 0;i < audioBytes.length;i++){
+            float val = (float) audioBytes[i];
+            Log.i(LOG_TAG," "+val);
+            audioInput.put(i,val);
+        }
     }
 
     // This method loads the TF lite file
