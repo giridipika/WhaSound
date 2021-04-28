@@ -2,6 +2,7 @@ package com.example.se;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.AssetFileDescriptor;
 import android.content.res.AssetManager;
 import android.database.Cursor;
@@ -180,6 +181,16 @@ public class Classify extends Fragment {
                         outputBuffer.rewind();
                         tfLite.run(inputBuffer,outputBuffer);
                         Log.i(LOG_TAG,"The output is :"+ Arrays.toString(outputBuffer.array()));
+                        SharedPreferences sharedPref = classify_view.getContext().getSharedPreferences(getString(R.string.ml_values), Context.MODE_PRIVATE); // To open in private mode, can only be seen
+                        // by our application
+                        SharedPreferences.Editor editor = sharedPref.edit(); // Opening the file to edit
+                        float [] arr = outputBuffer.array();
+                        String str = " ";
+                        for(int i=0;i<arr.length;i++){
+                            str = str + ", "+ arr[i];
+                        }
+                        editor.putString("FLOAT_ARR",str); // Putting in the string, Now Email keyword in SharedPref is associated with email entered by the user
+                        editor.apply(); // Applying the changes
                         inputBuffer.clear();
                         outputBuffer.clear();
                     }catch(Exception e){

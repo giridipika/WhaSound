@@ -7,4 +7,5 @@
     <string name="tab_text_3">History</string>
     <string name="tab_text_4">Profile</string>
     <string name="file_name">ASR</string> <!--Means animal sound recognizer -->
+    <string name="ml_values">MLVALUE</string> <!--Means ML value to pass from Classify to History page-->
 </resources>
