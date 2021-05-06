@@ -20,16 +20,16 @@ public class Summary extends Fragment {
         imported_text_view.setText("Firstly, the audio file to be classified is downloaded or recorded with the help" +
                 " of device's microphone. The application only supports .wav files therefore the user is requested to convert any other files to .wav "+
                 "before recognition. After the conversion of the files, when the user selects the audio file following steps are performed: \n"+
-                "\n 1. The user locates the converted/downloaded .wav file on their device."+
-                "\n 2. The selected audio file is converted to a byte buffer."+
-                "\n 3. The byte buffer is added to a two dimensional float buffer"+
-                "\n 4. The tflite model is loaded inside the application"+
-                "\n 5. The converted float buffer is passed in through the opened model"+
-                "\n 6. The model returns value in the form of float array"+
-                "\n 7. The float array is saved into the memory "+
-                "\n 8. The saved float array is dereferenced inside history page."+
-                "\n 9. The results are displayed in a pie-chart"+
-                "\n 10.The pie-chart displays what the result corresponds to once clicked on it.");
+                "\n 1. The user locates the converted/downloaded .wav file on their device.\n"+
+                "\n 2. The selected audio file is converted to a byte buffer.\n"+
+                "\n 3. The byte buffer is added to a two dimensional float buffer\n"+
+                "\n 4. The tflite model is loaded inside the application\n"+
+                "\n 5. The converted float buffer is passed in through the opened model\n"+
+                "\n 6. The model returns value in the form of float array\n"+
+                "\n 7. The float array is saved into the memory\n"+
+                "\n 8. The saved float array is dereferenced inside history page.\n"+
+                "\n 9. The results are displayed in a pie-chart\n"+
+                "\n 10.The pie-chart displays what the result corresponds to once clicked on it.\n");
         return summary_view;
     }
 }
