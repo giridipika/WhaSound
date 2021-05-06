@@ -44,7 +44,7 @@ public class History extends Fragment {
         String ml_recognized_model = sharedPref.getString("FLOAT_ARR", defaultValue); // Similar to map; email is the key and defaultValue is what it implies
         float[] ml_recognized_val = getFloatArray(ml_recognized_model);
         if (ml_recognized_val.length == 0){
-            ml_recognized_val = new float[] {0.2f,0.2f,0.2f,0.2f,0.2f};
+            ml_recognized_val = new float[] {40f,30f,10f,5f,15f};
         }
         yData = ml_recognized_val;
         Log.i(TAG,""+ ml_recognized_val[0]);
@@ -78,8 +78,8 @@ public class History extends Fragment {
                         break;
                     }
                 }
-                String employee = xData[pos1 + 1];
-                Toast.makeText(history_view.getContext(), "Probability of the sound being \n" + employee + " is: " + Float.parseFloat(sales)*100 + "%", Toast.LENGTH_SHORT).show();
+                String employee = xData[pos1];
+                Toast.makeText(history_view.getContext(), "Probability of the sound being \n" + employee + " is: " + Float.parseFloat(sales) + "%", Toast.LENGTH_SHORT).show();
             }
 
             @Override
