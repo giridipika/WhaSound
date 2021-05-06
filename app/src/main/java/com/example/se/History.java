@@ -44,7 +44,7 @@ public class History extends Fragment {
         String ml_recognized_model = sharedPref.getString("FLOAT_ARR", defaultValue); // Similar to map; email is the key and defaultValue is what it implies
         float[] ml_recognized_val = getFloatArray(ml_recognized_model);
         if (ml_recognized_val.length == 0){
-            ml_recognized_val = new float[] {0.2f,0.1f,0.5f,0.1f,0.1f};
+            ml_recognized_val = new float[] {0.2f,0.2f,0.2f,0.2f,0.2f};
         }
         yData = ml_recognized_val;
         Log.i(TAG,""+ ml_recognized_val[0]);
@@ -113,7 +113,6 @@ public class History extends Fragment {
         ArrayList<Integer> colors = new ArrayList<>();
         colors.add(Color.RED);
         colors.add(Color.BLUE);
-        colors.add(Color.GRAY);
         colors.add(Color.GREEN);
         colors.add(Color.CYAN);
         colors.add(Color.YELLOW);
