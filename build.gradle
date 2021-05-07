@@ -17,6 +17,7 @@ allprojects {
     repositories {
         google()
         mavenCentral ()  // mavenCentral() is for versioned stable release
+        jcenter()
         maven {          // This maven with url is for snapshot release (nightly)
             name 'ossrh-snapshot'
             url 'http://oss.sonatype.org/content/repositories/snapshots'

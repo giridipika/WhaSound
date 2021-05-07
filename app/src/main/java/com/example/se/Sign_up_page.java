@@ -17,6 +17,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 // User has access to back button on this page
 
 public class Sign_up_page extends Login_page {
@@ -78,26 +81,78 @@ public class Sign_up_page extends Login_page {
         sign_up_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Boolean create_account_voo = true;
+
                 user_email = (EditText) findViewById(R.id.signup_email);
                 email = user_email.getText().toString();
-
+                if (email.length() == 0){
+                    create_account_voo = false;
+                    Toast.makeText(Sign_up_page.this,"User email cannot be Null.\n Try again !",Toast.LENGTH_SHORT).show();
+                }
+                if(!isValid(email)){
+                    create_account_voo = false;
+                    Toast.makeText(Sign_up_page.this,"Wrong email format. Try again !",Toast.LENGTH_SHORT).show();
+                }
                 user_password = (EditText) findViewById(R.id.signup_password);
-                password = user_password.getText().toString();
-
+                password = user_password.getText().toString(); // Can be anything
+                if (password.length() == 0){
+                    create_account_voo = false;
+                    Toast.makeText(Sign_up_page.this,"Password cannot be Null.\n Try again !",Toast.LENGTH_SHORT).show();
+                }
                 user_name = (EditText) findViewById(R.id.signup_name);
-                name = user_name.getText().toString();
-
+                name = user_name.getText().toString(); // Can be anything
+                if (name.length() == 0){
+                    create_account_voo = false;
+                    Toast.makeText(Sign_up_page.this,"User Name cannot be Null.\n Try again !",Toast.LENGTH_SHORT).show();
+                }
                 user_id_no = (EditText) findViewById(R.id.signup_id_no);
-                id = user_id_no.getText().toString();
-
+                id = user_id_no.getText().toString(); // Can be anything (Student Id is already unique), will replace if existing
+                if (id.length() == 0){
+                    create_account_voo = false;
+                    Toast.makeText(Sign_up_page.this,"ID cannot be Null.\n Try again !",Toast.LENGTH_SHORT).show();
+                }
                 user_phone = (EditText) findViewById(R.id.signup_phone);
                 phone = user_phone.getText().toString();
+                if (phone.length() == 0){
+                    create_account_voo = false;
+                    Toast.makeText(Sign_up_page.this,"Phone number cannot be Null.\n Try again !",Toast.LENGTH_SHORT).show();
+                }
+                if(!isPhoneNumberCorrect(phone)){
+                    create_account_voo = false;
+                    Toast.makeText(Sign_up_page.this,"Wrong phone number format. \n Make sure you have +1 in the beginning and the number is 10 digits long. \n Try again !",Toast.LENGTH_SHORT).show();
+                }
 
-                createAccount(email,password,name,id,phone);
+                if (create_account_voo){
+                    createAccount(email,password,name,id,phone);
+                }
             }
         });
     }
+    // Checks if phone number is correct or not
+    private boolean isPhoneNumberCorrect(String pPhoneNumber) {
 
+        Pattern pattern = Pattern
+                .compile("((\\+[1-9]{3,4}|0[1-9]{4}|00[1-9]{3})\\-?)?\\d{8,20}");
+        Matcher matcher = pattern.matcher(pPhoneNumber);
+
+        if (matcher.matches()) return true;
+
+
+        return false;
+    }
+    // Checks if the email is valid or not
+    public static boolean isValid(String email)
+    {
+        String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\."+
+                "[a-zA-Z0-9_+&*-]+)*@" +
+                "(?:[a-zA-Z0-9-]+\\.)+[a-z" +
+                "A-Z]{2,7}$";
+
+        Pattern pat = Pattern.compile(emailRegex);
+        if (email == null)
+            return false;
+        return pat.matcher(email).matches();
+    }
     // Discussed in SRA; making use of the same feature as after sign up the user is navigated to the login screen
     public void openLoginPage(){
         Intent intent = new Intent(this, Login_page.class);

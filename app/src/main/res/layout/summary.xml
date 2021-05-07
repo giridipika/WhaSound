@@ -19,27 +19,27 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <TextView
-                android:id="@+id/summary_title"
-                android:layout_width="190dp"
-                android:layout_height="40dp"
-                android:layout_marginTop="24dp"
-                android:text="ML Model "
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <MultiAutoCompleteTextView
-                android:id="@+id/summary_multiline"
-                android:layout_width="292dp"
-                android:layout_height="558dp"
-                android:text="Change this text; as this is the description fo our. We can add images/photos and other details on this page and this section can be made longer. This is just a filler text, so it is better if you stop reading. Stop please Stop reading. :)))))"
+            <ScrollView
+                android:layout_width="324dp"
+                android:layout_height="615dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.529"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/summary_title"
-                app:layout_constraintVertical_bias="0.505" />
+                app:layout_constraintTop_toTopOf="parent">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/change_this_text"
+                        android:layout_width="307dp"
+                        android:layout_height="match_parent"
+                        android:text="TextView" />
+                </LinearLayout>
+            </ScrollView>
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </LinearLayout>

@@ -128,11 +128,11 @@ public class Classify extends Fragment {
 
         // ToDo : Model file opened here
         try{
-            ftliteOptions.setNumThreads(1);
-            FlexDelegate flex = new FlexDelegate();
-            ftliteOptions.addDelegate(flex);
-            File openThis = new File(MODEL_FILENAME);
-            tfLite = new Interpreter(tfLiteModel,ftliteOptions);
+//            ftliteOptions.setNumThreads(1);
+//            FlexDelegate flex = new FlexDelegate();
+//            ftliteOptions.addDelegate(flex);
+//            File openThis = new File(MODEL_FILENAME);
+//            tfLite = new Interpreter(tfLiteModel,ftliteOptions);
             // tfLite = new Interpreter(openThis);
         } catch (Exception e){
             throw new RuntimeException(e);
@@ -140,11 +140,11 @@ public class Classify extends Fragment {
         Log.i(LOG_TAG,"TF lite file loaded. ");
 
         // To load the metadata and verify it
-        int [] inputShape = tfLite.getInputTensor(0).shape();
-        modelInputLength = inputShape[1];
-
-        int [] outputShape  = tfLite.getOutputTensor(0).shape();
-        modelNumClasses = outputShape[1];
+//        int [] inputShape = tfLite.getInputTensor(0).shape();
+//        modelInputLength = inputShape[1];
+//
+//        int [] outputShape  = tfLite.getOutputTensor(0).shape();
+//        modelNumClasses = outputShape[1];
 
         Log.i(LOG_TAG," "+modelNumClasses);
         if (modelNumClasses != displayedLabels.size()){
@@ -180,26 +180,27 @@ public class Classify extends Fragment {
                     fileUri = data.getData();
                     filePath = fileUri.getPath();
                     System.out.println("The selected file path is :"+filePath);
-                    open_audio_file(fileUri);
+
+                    //open_audio_file(fileUri);
                     // Opens main audio file
                     try{
-                        FloatBuffer outputBuffer = FloatBuffer.allocate(modelNumClasses);
-                        inputBuffer.rewind();
-                        outputBuffer.rewind();
-                        tfLite.run(inputBuffer,outputBuffer);
-                        Log.i(LOG_TAG,"The output is :"+ Arrays.toString(outputBuffer.array()));
-                        SharedPreferences sharedPref = classify_view.getContext().getSharedPreferences(getString(R.string.ml_values), Context.MODE_PRIVATE); // To open in private mode, can only be seen
-                        // by our application
-                        SharedPreferences.Editor editor = sharedPref.edit(); // Opening the file to edit
-                        float [] arr = outputBuffer.array();
-                        String str = " ";
-                        for(int i=0;i<arr.length;i++){
-                            str = str + ", "+ arr[i];
-                        }
-                        editor.putString("FLOAT_ARR",str); // Putting in the string, Now Email keyword in SharedPref is associated with email entered by the user
-                        editor.apply(); // Applying the changes
-                        inputBuffer.clear();
-                        outputBuffer.clear();
+//                        FloatBuffer outputBuffer = FloatBuffer.allocate(modelNumClasses);
+//                        inputBuffer.rewind();
+//                        outputBuffer.rewind();
+                        //tfLite.run(inputBuffer,outputBuffer);
+//                        Log.i(LOG_TAG,"The output is :"+ Arrays.toString(outputBuffer.array()));
+//                        SharedPreferences sharedPref = classify_view.getContext().getSharedPreferences(getString(R.string.ml_values), Context.MODE_PRIVATE); // To open in private mode, can only be seen
+//                        // by our application
+//                        SharedPreferences.Editor editor = sharedPref.edit(); // Opening the file to edit
+//                        float [] arr = outputBuffer.array();
+//                        String str = " ";
+//                        for(int i=0;i<arr.length;i++){
+//                            str = str + ", "+ arr[i];
+//                        }
+//                        editor.putString("FLOAT_ARR",str); // Putting in the string, Now Email keyword in SharedPref is associated with email entered by the user
+//                        editor.apply(); // Applying the changes
+//                        inputBuffer.clear();
+//                        outputBuffer.clear();
                         openHistoryPage(); // This opens history page after everything is done
                     }catch(Exception e){
                         throw new RuntimeException(e);

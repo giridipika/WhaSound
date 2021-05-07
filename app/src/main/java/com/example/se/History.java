@@ -43,6 +43,10 @@ public class History extends Fragment {
         String defaultValue = "Random";
         String ml_recognized_model = sharedPref.getString("FLOAT_ARR", defaultValue); // Similar to map; email is the key and defaultValue is what it implies
         float[] ml_recognized_val = getFloatArray(ml_recognized_model);
+        if (ml_recognized_val.length == 0){
+            ml_recognized_val = new float[] {40f,30f,10f,5f,15f};
+        }
+        yData = ml_recognized_val;
         Log.i(TAG,""+ ml_recognized_val[0]);
         yData = ml_recognized_val; // Assigning the values
         pieChart = (PieChart) history_view.findViewById(R.id.idPieChart);
@@ -55,31 +59,34 @@ public class History extends Fragment {
 
         addDataSet();
 
-//        pieChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
-//            @Override
-//            public void onValueSelected(Entry e, Highlight h) {
-//                Log.d(TAG, "onValueSelected: Value select from chart.");
-//                Log.d(TAG, "onValueSelected: " + e.toString());
-//                Log.d(TAG, "onValueSelected: " + h.toString());
-//
-//                int pos1 = e.toString().indexOf("(sum): ");
-//                String sales = e.toString().substring(pos1 + 7);
-//
-//                for(int i = 0; i < yData.length; i++){
-//                    if(yData[i] == Float.parseFloat(sales)){
-//                        pos1 = i;
-//                        break;
-//                    }
-//                }
-//                String employee = xData[pos1 + 1];
-//                Toast.makeText(history_view.getContext(), "Employee " + employee + "\n" + "Sales: $" + sales + "K", Toast.LENGTH_LONG).show();
-//            }
-//
-//            @Override
-//            public void onNothingSelected() {
-//
-//            }
-//        });
+        pieChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
+            @Override
+            public void onValueSelected(Entry e, Highlight h) {
+                Log.d(TAG, "onValueSelected: Value select from chart.");
+                Log.d(TAG, "onValueSelected: " + e.toString());
+                Log.d(TAG, "onValueSelected: " + h.toString());
+                System.out.println(e.toString());
+                int pos1 = e.toString().indexOf("y:");
+                Log.i(TAG,"pos1= "+pos1);
+                String sales = e.toString().substring(pos1+3);
+                Log.i(TAG,sales);
+                Log.i(TAG,"Float Val"+Float.parseFloat(sales));
+                Log.i(TAG,sales);
+                for(int i = 0; i < yData.length; i++){
+                    if(yData[i] == Float.parseFloat(sales)){
+                        pos1 = i;
+                        break;
+                    }
+                }
+                String employee = xData[pos1];
+                Toast.makeText(history_view.getContext(), "Probability of the sound being \n" + employee + " is: " + Float.parseFloat(sales) + "%", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onNothingSelected() {
+
+            }
+        });
 
         return history_view;
     }
@@ -106,7 +113,6 @@ public class History extends Fragment {
         ArrayList<Integer> colors = new ArrayList<>();
         colors.add(Color.RED);
         colors.add(Color.BLUE);
-        colors.add(Color.GRAY);
         colors.add(Color.GREEN);
         colors.add(Color.CYAN);
         colors.add(Color.YELLOW);
@@ -116,6 +122,9 @@ public class History extends Fragment {
 
         //add legend to chart
         Legend legend = pieChart.getLegend();
+        legend.setFormSize(10f);
+        legend.setTextSize(12f);
+        legend.setTextColor(Color.BLACK);
         legend.setForm(Legend.LegendForm.CIRCLE);
         //create pie data object
         PieData pieData = new PieData(pieDataSet);
