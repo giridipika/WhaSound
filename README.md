@@ -20,3 +20,7 @@ If you are using google's teachable machine to train your ml model, please repla
 | Abhay Sunil Dere  	| Developer 	|
 | Prabin Lamichhane 	| Developer 	|
 | Karun Dawadi      	| Developer 	|
+
+## Demo Video 
+
+[![Demo Video](https://i9.ytimg.com/vi/q-uNSdnV0nM/mq3.jpg?sqp=CLSkkIUG&rs=AOn4CLA_DSwjC8xOr8fmjm1JYnNnDMu4pg)](https://www.youtube.com/embed/q-uNSdnV0nM)
